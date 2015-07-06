@@ -2,4 +2,4 @@
 A mobile sample application using lib.rtcomm.clientjs and lib.angular-rtcomm.
 
 
-Will be uploaded soon.
+The application will be uploaded soon...
