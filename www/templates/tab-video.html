@@ -1,0 +1,24 @@
+<ion-view view-title="Camera Report">
+  <ion-content on-scroll="updatePosition()" on-scroll-complete="updatePosition()" >
+    
+    <div class="row">
+    <div class="col">
+      <div id="videoContainer" class="video-container"></div>
+    </div>
+  </div>
+  
+  <div class="row">
+    <div class="col" style="z-index:9999">
+	   <label class="item item-input item-stacked-label">
+          <input type="text" ng-model="messageFromCamera" placeholder="{{messageFromCamera}}" >
+      </label>
+      <button class="button button-block {{sessionStarted?'button-assertive':'button-balanced'}}" ng-click="sessionAction()">
+          {{sessionStarted?'Hang Up':'Make a Call'}}
+      </button>
+      <button class="button button-block {{connected?'button-assertive':'button-balanced'}}" ng-click="connect()">
+          {{connected?'Registered':'Please Register'}}
+      </button>
+    </div>
+  </div>
+  </ion-content>
+</ion-view>

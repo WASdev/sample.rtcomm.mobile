@@ -1,0 +1,27 @@
+<ion-view view-title="Settings">
+   <ion-content>
+    <div class="list">
+        <label class="item item-input item-stacked-label">
+          <span class="input-label">MQTT Server</span>
+          <input type="text" ng-model="settings.server" placeholder="{{settings.server}}">
+         </label>
+        <label class="item item-input item-stacked-label">
+          <span class="input-label">MQTT Port</span>
+          <input type="number" ng-model="settings.port" placeholder="{{settings.port}}">
+         </label>
+        <label class="item item-input item-stacked-label">
+          <span class="input-label">Topic</span>
+          <input type="text" ng-model="settings.rtcommTopicPath" placeholder="{{settings.rtcommTopicPath}}" >
+         </label>
+        <!--label class="item item-input item-stacked-label">
+          <span class="input-label">Queue</span>
+          <input type="text" ng-model="settings.queue" placeholder="{{settings.queue}}" >
+         </label-->
+        <label class="item item-input item-stacked-label">
+          <span class="input-label">My UserID</span>
+          <input type="text" ng-model="settings.userid" placeholder="{{settings.userid}}" >
+         </label>
+        <ion-toggle ng-model="settings.enableVideo" toggle-class="toggle-calm">Enable Video</ion-toggle>
+    </div>
+  </ion-content>
+</ion-view>
