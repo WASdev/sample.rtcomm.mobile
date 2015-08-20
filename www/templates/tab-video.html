@@ -1,0 +1,16 @@
+<ion-view view-title="Help">
+  <ion-content on-scroll="updatePosition()" on-scroll-complete="updatePosition()" >
+  <div class="row">
+    <div class="col">
+      <div id="videoContainer" class="video-container"></div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <button class="button button-block {{connected?'button-assertive':'button-balanced'}}" ng-click="connect()">
+          {{connected?'Disconnect':'Connect'}}
+      </button>
+    </div>
+  </div>
+  </ion-content>
+</ion-view>
