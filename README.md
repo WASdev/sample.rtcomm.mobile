@@ -18,7 +18,7 @@ To use this project, you need to:
 
       cd rtcommmobile 
 
-  4) Add platforms iOS / android / browzer
+  4) Add platforms iOS / android / browser
 
       $  ionic platform add ios browser android
 
