@@ -24,18 +24,18 @@ To use this project, you need to:
 
   5) In order to install PhoneRTC on iOS, please follow these steps:
 
-    1. Go platforms/ios and click on [ProjectName].xcodeproj to open it with XCode 
-    2. Go to your project settings 
-    3. In General, change Deployment Target to 7.0 or above 
-    4. Go to Build Settings and change:
+      1. Go platforms/ios and click on [ProjectName].xcodeproj to open it with XCode 
+      2. Go to your project settings 
+      3. In General, change Deployment Target to 7.0 or above 
+      4. Go to Build Settings and change:
 
-      `Valid Architectures` => armv7
-      `Build Active Architecture Only` => No
-      `Objective-C Bridging Header` =>
-          [ProjectName]/Plugins/com.dooble.phonertc/Bridging-Header.h
-      `Runpath Search Paths` =>
-          $(inherited) @executable_path/Frameworks
-    5. Repeat step #4 for the CordovaLib project
+          `Valid Architectures` => armv7
+          `Build Active Architecture Only` => No
+          `Objective-C Bridging Header` =>
+              [ProjectName]/Plugins/com.dooble.phonertc/Bridging-Header.h
+          `Runpath Search Paths` =>
+              $(inherited) @executable_path/Frameworks
+      5. Repeat step #4 for the CordovaLib project
 
   6) Build the project.
 
