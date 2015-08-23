@@ -9,9 +9,10 @@ To use this sample application, you need to do the follwoing steps:
 3. Install Ionic & Cordova:
 
       $  npm install -g cordova ionic bower
+      
+      
       NOTE: use "$ sudo npm install -g cordova ionic bower" if you are running in iOS.
   
-
 4. Clone and configure this sample application code as follwoing:
  
   1) Clone this project
