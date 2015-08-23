@@ -55,7 +55,7 @@ To use this sample application, you need to do the follwoing steps:
 
   6) Testing in your browser
     From your project directory (rtcommMobile), run
-         cordova serve
+      cordova serve
 
     This will serve the app in a nodeinstance and you can access it locally in a browser. This is a good technique for UI        work as its quicker to see if your changes worked.
 
