@@ -11,7 +11,7 @@ To use this sample application, you need to do the follwoing steps:
    $  sudo npm install -g cordova ionic bower
   
 
-3. Clone and configure this sample application code
+3. Clone and configure this sample application code as follwoing:
  
   1) Clone this project
 
