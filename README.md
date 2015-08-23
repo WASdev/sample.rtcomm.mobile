@@ -55,8 +55,7 @@ To use this sample application, you need to do the follwoing steps:
 
   5) In order to test the application in your browser, go to your project directory (rtcommMobile) and run.
 
-      5.1) From the Project directory (rtcommMobile) run:
-        cordova prepare
+      cordova serve
  
   6) In order to test the application in your browser, go to your project directory (rtcommMobile) and run
       cordova serve
