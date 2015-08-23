@@ -1,6 +1,6 @@
 These are notes on how this project was setup.
 
-To use this project, you need to:
+To use this sample application, you need to do the follwoing steps:
 
 1. Know your MQTT server address host:port. 
 
@@ -8,21 +8,24 @@ To use this project, you need to:
 
 2. Install Ionic & Cordova:
 
-  1) $  sudo npm install -g cordova ionic bower
+   $  sudo npm install -g cordova ionic bower
+  
 
-  2) Clone this project
+3. Clone and configure this sample application code
+ 
+  1) Clone this project
 
       git clone git@github.rtp.raleigh.ibm.com:swgraham-us/rtcommmobile.git
 
-  3) Go into the project directory
+  2) Go into the project directory
 
       cd rtcommmobile 
 
-  4) Add platforms iOS / android / browser
+  3) Add platforms iOS / android / browser
 
       $  ionic platform add ios browser android
 
-  5) In order to install PhoneRTC on iOS, please follow these steps:
+  4) In order to install PhoneRTC on iOS, please follow these steps:
 
       1. Go platforms/ios and click on [ProjectName].xcodeproj to open it with XCode 
       2. Go to your project settings 
@@ -37,9 +40,9 @@ To use this project, you need to:
               $(inherited) @executable_path/Frameworks
       5. Repeat step #4 for the CordovaLib project
 
-  6) Build the project.
+  5) Build the project.
 
-      6.1) From the Project directory (rtcommMobile) run:
+      5.1) From the Project directory (rtcommMobile) run:
         cordova prepare
   
       NOTE: If this throws some errors on copying some png, files, just ignore.
@@ -47,10 +50,10 @@ To use this project, you need to:
       pushed to the correct platform runtime (and then build it if you want in xCode)
 
       -- iOS -- Prior to actually building the project in Xcode, you have to build it in Cordova.
-      6.2) Build the project in Xcode
+      5.2) Build the project in Xcode
       If there are serveral compilation errors ,resolove them as proposed by XCode.
 
-  7) Testing in your browser
+  6) Testing in your browser
     From your project directory (rtcommMobile), run:
     cordova serve
 
