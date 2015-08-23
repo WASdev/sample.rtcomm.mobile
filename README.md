@@ -39,13 +39,14 @@ To use this project, you need to:
 
   6) Build the project.
 
-      6.1) Prior to actually building the project in Xcode, you have to build it in Cordova:
-      From the Project directory (rtcommMobile) run:
-      cordova prepare
+      6.1) From the Project directory (rtcommMobile) run:
+        cordova prepare
   
       NOTE: If this throws some errors on copying some png, files, just ignore.
-      ALSO -- Anytime you change anything in the js/html files, you need to run cordova prepare to get the pushed to the           correct platform runtime (and then build it if you want in xCode)
+      ALSO -- Anytime you change anything in the js/html files, you need to run cordova prepare to get the 
+      pushed to the correct platform runtime (and then build it if you want in xCode)
 
+      -- iOS -- Prior to actually building the project in Xcode, you have to build it in Cordova.
       6.2) Build the project in Xcode
       If there are serveral compilation errors ,resolove them as proposed by XCode.
 
