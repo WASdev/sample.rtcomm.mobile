@@ -1,7 +1,9 @@
 These are notes on how this project was setup.
 
 To use this project, you need to:
+
 1. Know your MQTT server address host:port. 
+
 
 
 2. Install Ionic & Cordova:
