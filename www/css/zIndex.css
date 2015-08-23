@@ -1,0 +1,5 @@
+/* Empty. Add your own CSS if you like */
+.zIndexClass {
+  /* The following 3 create a full width 'square' div */
+ z-index: 9999;
+}

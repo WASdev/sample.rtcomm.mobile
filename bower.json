@@ -1,0 +1,38 @@
+{
+  "name": "rtcommmobile",
+  "version": "0.0.1",
+  "description": "A sample application using lib.rtcomm.clientjs and lib.angular-rtcomm",
+  "private": "true",
+  "main": [
+    "www/js/app.js"
+  ],
+  "devDependencies": {
+    "ionic": "driftyco/ionic-bower#1.0.0-beta.14",
+    "browser": "~0.7.3"
+  },
+  "keywords": [
+    "webrtc",
+    "rtcomm",
+    "angularjs",
+	"sample"
+  ],
+  "authors": [
+    "Scott Graham",
+	"Anat Fradin"
+  ],
+  "license": "Apache",
+  "homepage": "https://developer.ibm.com/wasdev/docs/webrtc/",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests",
+    "src",
+    "Gruntfile.js",
+    "package.json"
+  ],
+  "dependencies": {
+    "angular-rtcomm": "~0.0.4"
+  }
+}
