@@ -7,50 +7,52 @@ To use this project, you need to:
 
 
 2. Install Ionic & Cordova:
-$  sudo npm install -g cordova ionic bower
-Clone this project
 
-git clone git@github.rtp.raleigh.ibm.com:swgraham-us/rtcommmobile.git
-Go into the project directory
+1) $  sudo npm install -g cordova ionic bower
 
-cd rtcommmobile 
-Add platforms
+2) Clone this project
 
-# Add iOS
-$  ionic platform add ios browser
-After the above, do the following:
-In order to install PhoneRTC on iOS, please follow these steps:
+  git clone git@github.rtp.raleigh.ibm.com:swgraham-us/rtcommmobile.git
 
-1) Go platforms/ios and click on [ProjectName].xcodeproj to open it with XCode 2) Go to your project settings 3) In General, change Deployment Target to 7.0 or above 4) Go to Build Settings and change:
+3) Go into the project directory
 
-  `Valid Architectures` => armv7
-  `Build Active Architecture Only` => No
-  `Objective-C Bridging Header` =>
-       [ProjectName]/Plugins/com.dooble.phonertc/Bridging-Header.h
-  `Runpath Search Paths` =>
-       $(inherited) @executable_path/Frameworks
-5) Repeat step #4 for the CordovaLib project
+  cd rtcommmobile 
 
-Build the project
-Prior to actually building the project in Xcode, you have to build it in Cordova.
-There are serveral compilation errors in Xcode relove them as proposed.
+4) Add platforms iOS / android / browzer
 
-From the Project directory (rtcommMobile) run:
+  $  ionic platform add ios browser android
 
-cordova prepare
-NOTE: If this throws some errors on copying some png, files, just ignore.
+5) In order to install PhoneRTC on iOS, please follow these steps:
 
-ALSO -- Anytime you change anything in the js/html files, you need to run cordova prepare to get the pushed to the correct platform runtime (and then build it if you want in xCode)
+  5.1) Go platforms/ios and click on [ProjectName].xcodeproj to open it with XCode 2) Go to your project settings 3) In General, change Deployment Target to 7.0 or above 4) Go to Build Settings and change:
 
-At this point, you can test the application in your browser or build and deploy to your ipad/iPhone in XCode. 
+    `Valid Architectures` => armv7
+    `Build Active Architecture Only` => No
+    `Objective-C Bridging Header` =>
+         [ProjectName]/Plugins/com.dooble.phonertc/Bridging-Header.h
+    `Runpath Search Paths` =>
+         $(inherited) @executable_path/Frameworks
+  5.2) Repeat step #4 for the CordovaLib project
 
-Testing in your browser
-From your project directory (rtcommMobile), run:
+6) Build the project.
 
-cordova serve
-This will serve the app in a nodeinstance and you can access it locally in a browser. This is a good technique for UI work as its quicker to see if your changes worked.
+  6.1) Prior to actually building the project in Xcode, you have to build it in Cordova:
+  From the Project directory (rtcommMobile) run:
+    cordova prepare
+  
+  NOTE: If this throws some errors on copying some png, files, just ignore.
+  ALSO -- Anytime you change anything in the js/html files, you need to run cordova prepare to get the pushed to the correct   platform runtime (and then build it if you want in xCode)
 
-However, this DOES NOT actually use the PhoneRTC Plugin, but a 'shim' into the Browser's WebRTC Functionality. You still need to test on the actual device you want to run on.
+  6.2) Build the project in Xcode
+  If there are serveral compilation errors ,resolove them as proposed by XCode.
+
+7) Testing in your browser
+  From your project directory (rtcommMobile), run:
+  cordova serve
+
+  This will serve the app in a nodeinstance and you can access it locally in a browser. This is a good technique for UI work   as its quicker to see if your changes worked.
+
+  However, this DOES NOT actually use the PhoneRTC Plugin, but a 'shim' into the Browser's WebRTC Functionality. You still     need to test on the actual device you want to run on.
 
 References
 IONIC
