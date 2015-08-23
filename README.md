@@ -8,23 +8,23 @@ To use this project, you need to:
 
 2. Install Ionic & Cordova:
 
-1) $  sudo npm install -g cordova ionic bower
+  1) $  sudo npm install -g cordova ionic bower
 
-2) Clone this project
+  2) Clone this project
 
-  git clone git@github.rtp.raleigh.ibm.com:swgraham-us/rtcommmobile.git
+   git clone git@github.rtp.raleigh.ibm.com:swgraham-us/rtcommmobile.git
 
-3) Go into the project directory
+  3) Go into the project directory
 
-  cd rtcommmobile 
+    cd rtcommmobile 
 
-4) Add platforms iOS / android / browzer
+  4) Add platforms iOS / android / browzer
 
-  $  ionic platform add ios browser android
+    $  ionic platform add ios browser android
 
-5) In order to install PhoneRTC on iOS, please follow these steps:
+  5) In order to install PhoneRTC on iOS, please follow these steps:
 
-  5.1) Go platforms/ios and click on [ProjectName].xcodeproj to open it with XCode 2) Go to your project settings 3) In General, change Deployment Target to 7.0 or above 4) Go to Build Settings and change:
+  5.1) Go platforms/ios and click on [ProjectName].xcodeproj to open it with XCode 2) Go to your project settings 3) In          General, change Deployment Target to 7.0 or above 4) Go to Build Settings and change:
 
     `Valid Architectures` => armv7
     `Build Active Architecture Only` => No
