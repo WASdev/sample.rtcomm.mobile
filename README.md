@@ -56,9 +56,11 @@ To use this sample application, you need to do the follwoing steps:
   6) In order to test the application in your browser, go to your project directory (rtcommMobile) and run
       cordova serve
 
-   This will serve the app in a nodeinstance and you can access it locally in a browser. This is a good technique for UI        work as its quicker to see if your changes worked.
+   This will serve the app in a nodeinstance and you can access it locally in a browser. 
+   This is a good technique for UI work as its quicker to see if your changes worked.
 
-   However, this DOES NOT actually use the PhoneRTC Plugin, but a 'shim' into the Browser's WebRTC Functionality. You still     need to test on the actual device you want to run on.
+   However, this DOES NOT actually use the PhoneRTC Plugin, but a 'shim' into the Browser's 
+   WebRTC Functionality. You still need to test on the actual device you want to run on.
 
 References
 IONIC
