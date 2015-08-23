@@ -53,13 +53,10 @@ To use this sample application, you need to do the follwoing steps:
       5.2) Build the project in Xcode
       If there are serveral compilation errors ,resolove them as proposed by XCode.
 
-  5) In order to test the application in your browser, go to your project directory (rtcommMobile) and run.
+  6) In order to test the application in your browser, go to your project directory (rtcommMobile) and run.
 
       cordova serve
  
-  6) In order to test the application in your browser, go to your project directory (rtcommMobile) and run
-      cordova serve
-
    This will serve the app in a nodeinstance and you can access it locally in a browser. 
    This is a good technique for UI work as its quicker to see if your changes worked.
 
