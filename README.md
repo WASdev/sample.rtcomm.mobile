@@ -4,14 +4,14 @@ To use this sample application, you need to do the follwoing steps:
 
 1. Know your MQTT server address host:port. 
 
+2. Install NodeJS from here https://nodejs.org/
 
-
-2. Install Ionic & Cordova:
+3. Install Ionic & Cordova:
 
    $  sudo npm install -g cordova ionic bower
   
 
-3. Clone and configure this sample application code as follwoing:
+4. Clone and configure this sample application code as follwoing:
  
   1) Clone this project
 
