@@ -12,15 +12,15 @@ To use this project, you need to:
 
   2) Clone this project
 
-   git clone git@github.rtp.raleigh.ibm.com:swgraham-us/rtcommmobile.git
+      git clone git@github.rtp.raleigh.ibm.com:swgraham-us/rtcommmobile.git
 
   3) Go into the project directory
 
-    cd rtcommmobile 
+      cd rtcommmobile 
 
   4) Add platforms iOS / android / browzer
 
-    $  ionic platform add ios browser android
+      $  ionic platform add ios browser android
 
   5) In order to install PhoneRTC on iOS, please follow these steps:
 
@@ -39,14 +39,14 @@ To use this project, you need to:
 
   6) Build the project.
 
-    6.1) Prior to actually building the project in Xcode, you have to build it in Cordova:
+      6.1) Prior to actually building the project in Xcode, you have to build it in Cordova:
       From the Project directory (rtcommMobile) run:
       cordova prepare
   
       NOTE: If this throws some errors on copying some png, files, just ignore.
       ALSO -- Anytime you change anything in the js/html files, you need to run cordova prepare to get the pushed to the           correct platform runtime (and then build it if you want in xCode)
 
-    6.2) Build the project in Xcode
+      6.2) Build the project in Xcode
       If there are serveral compilation errors ,resolove them as proposed by XCode.
 
   7) Testing in your browser
