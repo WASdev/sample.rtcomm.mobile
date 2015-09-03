@@ -1,4 +1,4 @@
- Mobile sample application using lib.rtcomm.clientjs and lib.angular-rtcomm.
+ This mobile sample application is using lib.rtcomm.clientjs and lib.angular-rtcomm to make WebRTC Audio Video call.
 
 To use this sample application, you need to do the follwoing steps:
 
@@ -15,9 +15,7 @@ To use this sample application, you need to do the follwoing steps:
   
 4. Clone and configure this sample application code as following:
  
-  1) Go into the project directory
-
-      cd rtcommmobile 
+  1) Go into the project directory   (e.g. cd sample.rtcomm.mobile)
 
   2) Add platforms iOS / android / browser
 
