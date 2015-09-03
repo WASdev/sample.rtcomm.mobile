@@ -1,10 +1,10 @@
-These are notes on how this project was setup.
+ Mobile sample application using lib.rtcomm.clientjs and lib.angular-rtcomm.
 
 To use this sample application, you need to do the follwoing steps:
 
-1. Install NodeJS from here https://nodejs.org/. Close the cmd window and open new one to contine installation (to be sure that npm commant will work).
+1. Install NodeJS from here https://nodejs.org/. Please verify the installation path is added to Path environment variable
 
-2. Know your MQTT server address host:port (used in step 7.1) - you will need this server to communicate between users. Liberty server can be used as MQTT server.
+2. Know your MQTT server address host:port (used in step 7.1) - you will need this server to communicate between users. Liberty server can be used as MQTT server (Follow the [instructions](http://www-01.ibm.com/support/knowledgecenter/was_beta_liberty/com.ibm.websphere.wlp.nd.multiplatform.doc/ae/twlp_config_rtcomm.html) to configure Liberty as MQTT server - )
 
 3. Install ionic & cordova & bower:
 
@@ -66,8 +66,11 @@ To use this sample application, you need to do the follwoing steps:
    WebRTC Functionality. You still need to test on the actual device you want to run on.
    
    7) Configure and run the sample application:
-      1. Go to tab Settings and fill there "MQTT server" host and "MQTT server" (ensure that server is up and running).
+      1. Go to Settings tab and fill there "MQTT server" host and "MQTT server" port (ensure that server is up and running).
       2. Topic should be the same for all users who wants to share AV.
+      3. In "My UserID" fille the user name you want to register with.
+      4. Go to the Video tab and press "Please Register" button.
+      5. When you want to make a call, hit the "Make a Call" button and fill the peer user name.
       
 
 References
