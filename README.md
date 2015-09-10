@@ -1,19 +1,22 @@
- This mobile sample application is using lib.rtcomm.clientjs and lib.angular-rtcomm to make WebRTC Audio Video call.
+#Overview
 
-To use this sample application, you need to do the follwoing steps:
+This mobile sample application uses the http://github.com/WASdev/lib.rtcomm.clientjs and http://github.com/WASdev/lib.angular-rtcomm to make WebRTC Audio/Video calls on a mobile device.  It is heavily reliant on the http://phonertc.io project.
+
+#Getting Started
+To use this sample application, you need to do the following steps:
 
 1. Install NodeJS from here https://nodejs.org/. Please verify the installation path is added to Path environment variable
 
-2. Know your MQTT server address host:port (used in step 7.1) - you will need this server to communicate between users. Liberty server can be used as MQTT server (Follow the [instructions](http://www-01.ibm.com/support/knowledgecenter/was_beta_liberty/com.ibm.websphere.wlp.nd.multiplatform.doc/ae/twlp_config_rtcomm.html) to configure Liberty server as MQTT server)
+2. Know your MQTT server address host:port (used in step 7.1) - you will need this server to communicate between users. 
 
 3. Install ionic & cordova & bower:
 
-      $  npm install -g cordova ionic bower
-      
-      
-      NOTE: use "$ sudo npm install -g cordova ionic bower" if you are running in Mac.
-  
-4. Clone and configure this sample application code as following:
+```
+$  npm install -g cordova ionic bower
+```
+NOTE: use `$ sudo npm install -g cordova ionic bower` if you are running in Mac.
+
+4. Clone and configure the sample application code:
  
   1) Go into the project directory   (e.g. cd sample.rtcomm.mobile)
 
@@ -67,10 +70,10 @@ To use this sample application, you need to do the follwoing steps:
       5. When you want to make a call, hit the "Make a Call" button and fill the peer user name.
       
 
-References
-IONIC
-Starting here: http://ionicframework.com/getting-started/
+#References
+**IONIC**
+Start here: http://ionicframework.com/getting-started/
 
-phonertc.io
+**phonertc.io**
 https://github.com/alongubkin/phonertc/wiki/Installation
 
