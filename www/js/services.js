@@ -1,49 +1,112 @@
 angular.module('rtcommMobile.services', ['angular-rtcomm'])
-.factory('Video', function($rootScope, $log, RtcommService) {
-})
 
-.factory('Config', function($rootScope, $http, $log, RtcommService){
-  var configURL = "rtcommConfig.json";
-  var defaultConfig = {};
+.factory('State', function($rootScope, $log, RtcommService, Settings) {
+    var state = {
+      registered :false,
+      insession : false,
+      users: [],
+      message : "Not registered",
+      alert: '',
+      userid: ''
+    };
+    var presenceMonitor = null;
+    $rootScope.$on('rtcomm::init', function(event, registered, object ) {
+      presenceMonitor = RtcommService.getPresenceMonitor(Settings.load().presenceTopic);
+      $log.debug('Presence Data? : ', presenceMonitor.getPresenceData()[0].flatten());
+      state.users = presenceMonitor.getPresenceData()[0].flatten();
+      $log.debug(' Users are: ', state.users);
+      presenceMonitor.on('updated', function(presenceData) {
+        $rootScope.$evalAsync(function() {
+          $log.debug('--------- Presence was updated ------------', presenceData);
+          $log.debug('--------- Presence Data? : ', presenceMonitor.getPresenceData()[0].flatten());
+          state.users= presenceMonitor.getPresenceData()[0].flatten();
+          $log.debug('--------- users: ? : ', state.users);
+        });
+      });
+      $rootScope.$evalAsync(function(){
+        if (registered) {
+          state.registered = true;
+          state.userid = object.userid;
+          state.message = "Registered as "+object.userid;
+        } else {
+          state.registered= false;
+          state.message = "Init Failed:" + object;
+        }
+      });
+    });
+	  $rootScope.$on('rtcomm::alert', function(event, eventObject){
+       $log.debug('received alert event: ', eventObject);
+       if (eventObject.msg === 'document_replaced') {
+         state.message = 'Not registered';
+       }
+       state.alert = eventObject.msg ? eventObject.msg : eventObject;
+    });
+    $rootScope.$on('reset', function(event, eventObject) {
+      $log.debug('RESET: ', eventObject);
+      state.message = 'Connection was reset' ;
+      state.registered = false;
+      state.insession = false;
+    });
+    $rootScope.$on('session:started', function(event, eventObject) {
+      state.insession = true;
+    });
+    $rootScope.$on('session:stopped', function(event, eventObject) {
+      state.insession = false;
+    });
+    $rootScope.$on('session:failed', function(event, eventObject) {
+      $log.debug('FAILED', eventObject);
+      state.message = 'Session Start failed';
+      state.insession = false;
+    });
+   return state;
+})
+.factory('Settings', function($rootScope, $http, $log, RtcommService){
+
+  var configURL = "/rtcommConfig.json";
+  var defaultConfig = { 
+    enableVideo: true,
+    register: false,
+    server: 'messagesight.demos.ibm.com',
+    port: 1883,
+    presenceTopic: 'mobileClients',
+    rtcommDebug: 'DEBUG',
+    userid : '',
+	  rtcommTopicPath : "/rtcomm-scottgraham/"
+  };
   var localConfig = localStorage['rtcommConfig'] ? 
                     JSON.parse(localStorage['rtcommConfig']) :  
                     null;
+  var mySettings = defaultConfig;
 
   $log.info('Using LocalStorage config: ', localConfig);
-  var config = localConfig || { enableVideo: true,
-    server: 'anatf-tp.haifa.ibm.com',
-    port: 9080,
-	  rtcommTopicPath : "/rtcomm/",
-    queue: 'Doctors',
-  };
 
   $rootScope.$evalAsync(function(){
     if(localConfig) {
-      angular.extend(config, localConfig);
+      angular.extend(mySettings, localConfig);
     } else {
       $log.info('Loading config in Config Service...');
       $http.get(configURL)
         .success( function(cfg){
           $log.info('Received cfg: ',cfg);
           defaultConfig = cfg; 
-          angular.extend(config, defaultConfig);
-          $log.info('Config is now: ',config);
-          localStorage['rtcommConfig'] = JSON.stringify(config);
+          angular.extend(mySettings, defaultConfig);
+          $log.info('Config is now: ',mySettings );
+          localStorage['rtcommConfig'] = JSON.stringify(mySettings);
         })
-        .error(function(data,status,headers,config){
+        .error(function(data,status,headers){
+          angular.extend(mySettings, defaultConfig);
           $log.debug("Config Service unable to access config "+status);
         });
     }
+    $log.debug('Settings:  ',mySettings);
   });
 
   return {
-    config: config,
-    set: function(){
-      localStorage['rtcommConfig'] = JSON.stringify(config);
-      RtcommService.setConfig(config);
+    load: function() {
+      return mySettings
     },
-    getKey: function(key){
-      return config[key];
+    save: function(){
+      localStorage['rtcommConfig'] = JSON.stringify(mySettings);
     }
   };
 });

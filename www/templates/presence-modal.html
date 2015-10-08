@@ -1,0 +1,15 @@
+<ion-modal-view>
+    <ion-header-bar>
+      <h1 class="title">Select another user</h1>
+    </ion-header-bar>
+    <ion-content>
+    <ion-list>
+      <ion-item class="item-button-right" ng-repeat="user in users" >
+        <h2>{{user.name}}</h2>
+        <button class="button {{(user.name === myUser)?'button-disabled':'button-positive'}}" ng-click="connect(user.name)"> 
+          <i class="icon ion-ios-telephone"></i>
+        </button>
+      </ion-item>
+    </ion-list>
+    </ion-content>
+  </ion-modal-view>

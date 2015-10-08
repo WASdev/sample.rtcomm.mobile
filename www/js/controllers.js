@@ -1,200 +1,199 @@
 angular.module('rtcommMobile.controllers', [])
+.controller('MasterCtrl', function MasterCtrl($scope, $ionicTabsDelegate,$log, RtcommService, State, $ionicPopup, $ionicPlatform, Settings) {
+  $log.debug('------- inited MasterCtrl------------ ');
+  //TODO:  We should load settings/connect if its done. (move 'register logic here?');
+  $scope.state = State;
+  // Define what we want to use for video tags
+  RtcommService.setViewSelector('local-video','remote-video');
+  // Register if we are configured to register.
+  //
 
-.controller('DashCtrl', function($scope) {})
-
-.controller('VideoCtrl', function($scope, $log, RtcommService,Config){
-
-  // Load the Config when initializing and set it on the RtcommService
-  var init = function() {
-    $log.debug('Applying Config ', Config.config);
-  };
-
-  // Assign some variables for the UI
-  $scope.videoElement = document.getElementById('videoContainer');
-  $scope.connected = false;
-  $scope.configurationWasSet = false;
-  $scope.videoActiveEndpointUUID = null;
-  $scope.sessionStarted = false;
-  var callEndpoint = 'noCall';
-  var peerUserId = 'noCall';
-  var accepted = false;
-  $scope.messageFromCamera="No Camera Report";
-
-  // Called on something changed, needed for the phonertc plugin
-  $scope.updatePosition = function updatePosition() {
-    cordova.plugins.phonertc.setVideoView({
-      container: $scope.videoElement,
-      local: {
-      position: [20, 20],
-           size: [1, 1]
-          }
-        });
-   };
-   
-   $scope.$on('newendpoint', function (event, endpointUUID){
-		RtcommService.setActiveEndpoint(endpointUUID);
-   });
-    
-	// The "session:alerting" event is received when incoming AV call initated by remote used, and this is the place to 
-	// accept or deny the call.
-   $scope.$on('session:alerting', function (event, endpointUUID){
-        if (confirm("Accept incoming video from Cam1 ?")) {
-            console.log( "session:alerting event");
-			accepted = true;
-        }      
-   });
-  
-  // The "session:started" event is received when incoming call received from the peer.        
-   $scope.$on('session:started', function (event, endpointUUID){
-		$log.debug('session:started' + endpointUUID);
-		if(callEndpoint == 'noCall'){ // this is an incoming call
-			callEndpoint = endpointUUID.endpoint.id;
-		}
-		$scope.messageFromCamera="Stream from Camera 2";
-        $scope.sessionStarted = true;
-   });
-   
-   // The "endpointActivated" event is received when incoming connection received from the peer accepted by local user
-   // and activated.        
-   $scope.$on('endpointActivated', function (event, endpointUUID) {
-   //  Not to do something here to show that this button is live.
-     $log.debug('Video Ctrl : endpointActivated =' + endpointUUID);
-     if (accepted && $scope.videoActiveEndpointUUID !== endpointUUID.id){
-       $scope.videoActiveEndpointUUID = endpointUUID.id;
-       $scope.endpoint = RtcommService.getEndpoint(endpointUUID.id);
-       $scope.endpoint.webrtc.setLocalMedia(
-         { mediaIn: $scope.videoElement });
-       }
-	   $scope.endpoint.webrtc.enable();
-	   $scope.endpoint.accept();
-       $scope.updatePosition();
-   });
-      
-
-	// The "webrtc:connected" event is received use successfully registered into MQTT server.         
-   $scope.$on('webrtc:connected', function(event,eventObject){
-     $scope.connected = true;
-     $scope.updatePosition();
-   });
-    
-    $scope.$on('destroyed', function(event,eventObject){
-		$log.debug('destroyed' + eventObject);
-    });
-   
-   $scope.$on('webrtc:diconnected', function(event,eventObject){
-     $scope.sessionStarted = false;
-   });
-   
-   // The "session:stopped" event is received when session stopped.
-   $scope.$on('session:stopped', function(event,eventObject){
-	if(callEndpoint != 'noCall'){
-		$log.info('session:stopped event. Ending ongoing call '+ callEndpoint);
-		$scope.endCall();
-	}
-    $scope.sessionStarted = false;
-   });
-   
-	$scope.$on('session:failed', function(event,eventObject){
-     $scope.sessionStarted = false;
-   });
-
-   // 
-	$scope.$on('rtcomm::init', function(event,eventObject){
-		$scope.messageFromCamera="No Camera Report";
-		$scope.connected = eventObject;
+	$scope.$on('endpointActivated', function (event, endpointUUID) {
+		//	Not to do something here to show that this button is live.
+    // Select our tab?
+    $ionicTabsDelegate.select(1);
+		$log.debug('MasterCtrl: endpointActivated =' + endpointUUID);
+		RtcommService.setVideoView(endpointUUID);
 	});
-            
-    // Register button
-	$scope.connect = function(id) {
-		//id = id || Config.getKey('queue');
-		//$log.info('Using ID of: '+id);
-		if ($scope.connected) {
-			if(callEndpoint != 'noCall'){
-				$log.info('End ongoing call with: ' + peerUserId);
-        	 	$scope.endCall();
-			}
-			$scope.disconnect();
-			$scope.sessionStarted = false;
-			$scope.connected = false;
-		} else {			
-			$scope.register();
+
+  $scope.$on('session:alerting', function(event, object) {
+    $log.debug('MasterCtrl: received session:alerting');
+    // 1 is video.
+    $ionicTabsDelegate.select(1);
+    $ionicPopup.confirm({
+        title: "Incoming Call",
+        template: "Accept incoming call from "+object.endpoint.getRemoteEndpointID(),
+    }).then(function(confirmed) { 
+      if (confirmed) {
+        $log.debug(' -------- MasterCtrl: Accepting Call() -------');
+        object.endpoint.accept();
+      } else {
+        object.endpoint.reject();
+      }
+    });
+  });
+
+  $scope.selectTabWithIndex = function(index) {
+    $log.debug('Selecting tab '+index);
+    $ionicTabsDelegate.select(index);
+  }
+})
+.controller('DashCtrl', function($scope,$log, State, RtcommService, Settings) {
+
+  // handle some events and log information
+   $scope.state = State;
+   $scope.settings = Settings.load();
+    /*
+     *
+    var insertEvent = function(event, eventObject) {
+      $scope.eventHistory.push(event.name);
+      $log.debug('DashCtrl received event: ',event);
+      $log.debug('DashCtrl received eventObject: ',eventObject);
+//      $scope.eventHistory.push(event event);
+    }
+    $scope.$on('endpointActivated', insertEvent);
+    $scope.$on('session:started', insertEvent);
+    $scope.$on('rtcomm::init', insertEvent);
+    $scope.$on('queueupdate', insertEvent);
+    $scope.$on('rtcomm::alert', insertEvent);
+    $scope.$on('session:stopped', insertEvent);
+    $scope.$on('session:failed', insertEvent);
+    $scope.$on('session:queued', insertEvent);
+    $scope.$on('session:alerting', insertEvent);
+    $scope.$on('session:trying', insertEvent);
+    $scope.$on('session:ringing',insertEvent);
+    $scope.$on('noEndpointActivated', insertEvent);
+    $scope.$on('webrtc:connected', insertEvent);
+    $scope.$on('webrtc:disconnected', insertEvent);
+    */
+  $scope.action = (State.registered) ? "Unregister" : "Register";
+
+  $scope.register = function() {
+    // Do some checking here.
+    // if not initialized, initialize...
+    $log.debug('Register is:'+$scope.state.registered+' Initialized is: '+RtcommService.isInitialized());
+    // If we are not registered...
+    //
+    if (!$scope.state.registered && !RtcommService.isInitialized() && ($scope.settings.userid !== '')) {
+      $log.debug('Registering as:  '+ $scope.settings.userid);
+      // Setting the config will invoke Register if we are not registered.
+      RtcommService.setConfig($scope.settings);
+      //RtcommService.register($scope.settings.userid);
+    } else {
+      $log.debug('Calling Unregister... ');
+      RtcommService.unregister();
     }
   };
-  
-  
-  // Register yourself in the MQTT server
-  $scope.register = function() {
-		 $log.debug('Registering');
-		 if($scope.configurationWasSet){
-			 id = Config.getKey('userid');
-			 $log.info('Regitser userID: '+id);
-        	 RtcommService.register(id);
-		 }
-		 else{
-			Config.set();
-			$scope.configurationWasSet = true;
-		 }
-   };
-   
-   // Start / End call with peer. 
-    $scope.sessionAction = function(id) {
-        if ($scope.sessionStarted) {
-            $log.debug('HandUp session ');
-			$scope.endCall();
-        } 
-		else{
-			if($scope.connected){
-				var person = prompt("Please enter Calle Name", "");
-				$scope.placeCall(person);
-				$scope.updatePosition();
-			}
-			else{
-				confirm("You should Register first");
-			}
-		}
-    };
-
-	// Disconnect existing ongoing AV call.
-	$scope.endCall = function() {
-		$log.debug('Ending Call with + ' + peerUserId);
-		if(callEndpoint != 'noCall'){
-			var endpointToDisconnect = RtcommService.getEndpoint(callEndpoint);
-			callEndpoint = 'noCall';
-			RtcommService.endCall(endpointToDisconnect);
-			$scope.messageFromCamera="No Camera Report";
-			peerUserId = 'noCall';
-		}
-		else{
-			$log.debug('No active AV call');
-		};
-   };
-   
-   // Disconnect from the MQTT server.
-	$scope.disconnect = function() {
-		 $log.debug('Disconnecting call for endpoint: ' + $scope.epCtrlActiveEndpointUUID);
-		 if($scope.configurationWasSet){
-			$log.debug('unregister this user: ' + $scope.epCtrlActiveEndpointUUID);
-		 	RtcommService.unregister();
-		 }
-   };
-
-	$scope.placeCall = function(id){
-		var peerUserId = id;
-		if (peerUserId) {
-			$log.info('Calling ' + peerUserId);
-			// We are only going to support video here.
-			callEndpoint = RtcommService.placeCall(peerUserId,['webrtc']);
-		} else {
-			$log.error('No callee specified...');
-		}
-	};
-	
-  // Init the controller when Loaded!
-  init();
 })
+.controller('VideoCtrl', function($scope, $log, $ionicPopup, $ionicModal, State, RtcommService){
+  
+  $scope.myEndpointUUID = null;
+  $scope.myUser = State.userid;
+  $scope.sessionStarted = false;
+  $scope.sessionState = null;
+  $scope.users = State.users;
 
+  $log.debug('-------- Inited Video Controller ----------');
+
+  // Update and check this;
+  $scope.$on('$ionicView.enter', function() {
+    $scope.users = State.users;
+    $log.debug('VideoCtrl Enter -- Users?', $scope.users);
+  });
+
+  $ionicModal.fromTemplateUrl('/templates/presence-modal.html', {
+    scope: $scope,
+    animation: 'slide-in-up'
+  }).then(function(modal) {
+    $scope.modal = modal;
+  });
+
+
+  $scope.openModal = function() {
+    $scope.modal.show();
+  };
+  $scope.closeModal = function() {
+    $scope.modal.hide();
+  };
+  //Cleanup the modal when we're done with it!
+  $scope.$on('$destroy', function() {
+    $scope.modal.remove();
+  });
+  // Execute action on hide modal
+  $scope.$on('modal.hidden', function() {
+    // Execute action
+  });
+  // Execute action on remove modal
+  $scope.$on('modal.removed', function() {
+    // Execute action
+  });
+
+  $scope.connect = function connect(callee) {
+     $log.debug('Pressed connect -- got user: '+callee);
+      if (callee) {
+        $scope.myEndpointUUID = RtcommService.placeCall(callee, ['webrtc']);
+      } else {
+        $log.error('You must enter a callee');
+      }
+      $scope.closeModal();
+  };
+
+  $scope.sessionAction = function() {
+    // Issue a 'connect' or disconnect.
+    if ($scope.sessionStarted) {
+      RtcommService.endCall(RtcommService.getEndpoint(RtcommService.getActiveEndpoint()));
+    } else {
+     $scope.openModal();
+     /*
+     $ionicPopup.prompt({
+       title: 'Call someone',
+       template: 'Who would you like to call?',
+       inputType: 'person',
+       inputPlaceholder: 'callee'
+     }).then(function(callee) {
+      if (callee) {
+        $scope.myEndpointUUID = RtcommService.placeCall(callee, ['webrtc']);
+      } else {
+        $log.error('You must enter a callee');
+      }
+     });
+    */
+    }
+  };
+  $scope.$on('session:started', function(event, object) {
+    $log.debug('VideoCtrl - session:started');
+    $scope.sessionStarted = true;
+  });
+  $scope.$on('session:stopped', function(event, object) {
+    $log.debug('VideoCtrl - session:stopped');
+    $scope.sessionStarted = false;
+  });
+  $scope.$on('session:failed', function(event, object) {
+    $log.debug('VideoCtrl - session:failed');
+    $scope.sessionStarted = false;
+  });
+})
+.controller('UsersCtrl', function($scope, $log, State) {
+  $scope.users = State.users;
+  $log.debug('UsersCtrl!', $scope.users);
+  $scope.$on('$ionicView.enter', function() {
+    $log.debug('Users Enter -- loading config ', $scope.users);
+  });
+})
 // Settings controller
-.controller('SettingsCtrl', function($scope, Config) {
-  $scope.settings = Config.config;
-  $scope.set= Config.set;
+.controller('SettingsCtrl', function($scope, $log, Settings) {
+  $scope.settings = {};
+  $scope.$on('$ionicView.enter', function() {
+    $log.debug('Settings Enter -- loading config ');
+    $scope.settings = Settings.load();
+  });
+  $scope.$on('$ionicView.leave', function() {
+    // Save the settings
+    Settings.save();
+  });
+  
+
+
+
+
 });
