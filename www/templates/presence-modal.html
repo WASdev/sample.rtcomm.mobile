@@ -4,9 +4,16 @@
     </ion-header-bar>
     <ion-content>
     <ion-list>
-      <ion-item class="item-button-right" ng-repeat="user in users" >
+      
+      <ion-item class="item-button-right">
+        <input type="text" ng-model="video.callee" placeholder="Enter or select a user">
+        <button class="button button-positive" ng-click="video.connect()"> 
+          <i class="icon ion-ios-telephone"></i>
+        </button>
+      </ion-item>
+      <ion-item class="item-button-right" ng-repeat="user in video.users" ng-if="user.name!=video.myUser">
         <h2>{{user.name}}</h2>
-        <button class="button {{(user.name === myUser)?'button-disabled':'button-positive'}}" ng-click="connect(user.name)"> 
+        <button class="button button-positive" ng-click="video.connect(user.name)"> 
           <i class="icon ion-ios-telephone"></i>
         </button>
       </ion-item>

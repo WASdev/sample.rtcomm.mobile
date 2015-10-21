@@ -8,10 +8,10 @@
       <video id="remote-video" class='remoteVideo' autoplay></video>
       <div id="control-buttons" class="row">
         <div class="col" style="text-align:center">
-         <button class="button icon round-button ion-ios-telephone {{sessionStarted?'button-assertive':'button-balanced'}}" ng-click="sessionAction()"></button>
+         <button class="button icon round-button ion-ios-telephone {{video.sessionStarted?'button-assertive':'button-balanced'}}" ng-click="video.sessionAction()"></button>
         </div>
         <div class="col" style="text-align:center">
-         <button class="button icon round-button ion-ios-mic-off"></button>
+         <button class="button icon round-button ion-ios-mic-off" ng-click="video.toggleMute()"></button>
         </div>
       <div> 
   </div>

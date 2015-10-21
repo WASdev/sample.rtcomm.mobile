@@ -1,21 +1,22 @@
 angular.module('rtcommMobile.controllers', [])
-.controller('MasterCtrl', function MasterCtrl($scope, $ionicTabsDelegate,$log, RtcommService, State, $ionicPopup, $ionicPlatform, Settings) {
+/*
+ *  The MasterCtrl provides a scope an initialization to access data across tabs. We need it because we have to bring in
+ *  a window as active and assign AV window to it.
+ */
+.controller('MasterCtrl', function MasterCtrl($scope, $ionicTabsDelegate,$log, rtcommService, Global, $ionicPopup, $ionicPlatform, Settings) {
   $log.debug('------- inited MasterCtrl------------ ');
   //TODO:  We should load settings/connect if its done. (move 'register logic here?');
-  $scope.state = State;
   // Define what we want to use for video tags
-  RtcommService.setViewSelector('local-video','remote-video');
+  $scope.state = Global.state;
+  rtcommService.setViewSelector('local-video','remote-video');
   // Register if we are configured to register.
-  //
-
 	$scope.$on('endpointActivated', function (event, endpointUUID) {
 		//	Not to do something here to show that this button is live.
     // Select our tab?
     $ionicTabsDelegate.select(1);
 		$log.debug('MasterCtrl: endpointActivated =' + endpointUUID);
-		RtcommService.setVideoView(endpointUUID);
+		rtcommService.setVideoView(endpointUUID);
 	});
-
   $scope.$on('session:alerting', function(event, object) {
     $log.debug('MasterCtrl: received session:alerting');
     // 1 is video.
@@ -23,7 +24,7 @@ angular.module('rtcommMobile.controllers', [])
     $ionicPopup.confirm({
         title: "Incoming Call",
         template: "Accept incoming call from "+object.endpoint.getRemoteEndpointID(),
-    }).then(function(confirmed) { 
+    }).then(function(confirmed) {
       if (confirmed) {
         $log.debug(' -------- MasterCtrl: Accepting Call() -------');
         object.endpoint.accept();
@@ -38,86 +39,75 @@ angular.module('rtcommMobile.controllers', [])
     $ionicTabsDelegate.select(index);
   }
 })
-.controller('DashCtrl', function($scope,$log, State, RtcommService, Settings) {
-
+.controller('DashCtrl', function($scope, $log, $ionicLoading, Global, rtcommService, Settings) {
   // handle some events and log information
-   $scope.state = State;
-   $scope.settings = Settings.load();
-    /*
-     *
-    var insertEvent = function(event, eventObject) {
-      $scope.eventHistory.push(event.name);
-      $log.debug('DashCtrl received event: ',event);
-      $log.debug('DashCtrl received eventObject: ',eventObject);
-//      $scope.eventHistory.push(event event);
-    }
-    $scope.$on('endpointActivated', insertEvent);
-    $scope.$on('session:started', insertEvent);
-    $scope.$on('rtcomm::init', insertEvent);
-    $scope.$on('queueupdate', insertEvent);
-    $scope.$on('rtcomm::alert', insertEvent);
-    $scope.$on('session:stopped', insertEvent);
-    $scope.$on('session:failed', insertEvent);
-    $scope.$on('session:queued', insertEvent);
-    $scope.$on('session:alerting', insertEvent);
-    $scope.$on('session:trying', insertEvent);
-    $scope.$on('session:ringing',insertEvent);
-    $scope.$on('noEndpointActivated', insertEvent);
-    $scope.$on('webrtc:connected', insertEvent);
-    $scope.$on('webrtc:disconnected', insertEvent);
-    */
-  $scope.action = (State.registered) ? "Unregister" : "Register";
+  $scope.settings = Settings.load();
+  // Bind to the state...
+  $scope.state = Global.state;
+  $scope.action = ($scope.state.registered) ? "Unregister" : "Register";
+
+  $scope.$on('rtcomm::init', function(event,registered,object) {
+    $ionicLoading.hide();
+  });
 
   $scope.register = function() {
     // Do some checking here.
     // if not initialized, initialize...
-    $log.debug('Register is:'+$scope.state.registered+' Initialized is: '+RtcommService.isInitialized());
+    $log.debug('Register is:'+$scope.state.registered+' Initialized is: '+rtcommService.isInitialized());
     // If we are not registered...
     //
-    if (!$scope.state.registered && !RtcommService.isInitialized() && ($scope.settings.userid !== '')) {
+    if (!$scope.state.registered && !rtcommService.isInitialized() && ($scope.settings.userid !== '')) {
+      $ionicLoading.show({
+        template: 'Loading...'
+      });
       $log.debug('Registering as:  '+ $scope.settings.userid);
       // Setting the config will invoke Register if we are not registered.
-      RtcommService.setConfig($scope.settings);
-      //RtcommService.register($scope.settings.userid);
+      rtcommService.setConfig($scope.settings);
+      //rtcommService.register($scope.settings.userid);
     } else {
       $log.debug('Calling Unregister... ');
-      RtcommService.unregister();
+      rtcommService.unregister();
     }
   };
 })
-.controller('VideoCtrl', function($scope, $log, $ionicPopup, $ionicModal, State, RtcommService){
-  
-  $scope.myEndpointUUID = null;
-  $scope.myUser = State.userid;
-  $scope.sessionStarted = false;
-  $scope.sessionState = null;
-  $scope.users = State.users;
-
+.controller('VideoCtrl', function($scope, $log, $ionicPopup, $ionicModal, Global, rtcommService){
+  var vm = this;
+  vm.myEndpointUUID = null;
+  vm.myUser = Global.state.userid;
+  vm.sessionStarted = false;
+  vm.sessionState = null;
+  vm.users = Global.state.users;
+  vm.callee = null;
   $log.debug('-------- Inited Video Controller ----------');
 
   // Update and check this;
   $scope.$on('$ionicView.enter', function() {
-    $scope.users = State.users;
-    $log.debug('VideoCtrl Enter -- Users?', $scope.users);
+    vm.users = Global.state.users;
+    vm.myEndpointUUID = rtcommService.getActiveEndpoint();
+    $log.debug('VideoCtrl Enter -- Users?', vm.users);
   });
 
-  $ionicModal.fromTemplateUrl('/templates/presence-modal.html', {
+  $ionicModal.fromTemplateUrl('templates/presence-modal.html', {
     scope: $scope,
     animation: 'slide-in-up'
   }).then(function(modal) {
-    $scope.modal = modal;
+    $log.debug('modal $scope?', $scope);
+    $log.debug('modal create vm?', vm);
+    $log.debug('modal?', modal);
+    vm.modal = modal;
   });
 
-
-  $scope.openModal = function() {
-    $scope.modal.show();
+  vm.openModal = function() {
+    $log.debug('vm?', vm);
+    $log.debug('vm.modal?', vm.modal);
+    vm.modal.show();
   };
-  $scope.closeModal = function() {
-    $scope.modal.hide();
+  vm.closeModal = function() {
+    vm.modal.hide();
   };
   //Cleanup the modal when we're done with it!
   $scope.$on('$destroy', function() {
-    $scope.modal.remove();
+    vm.modal.remove();
   });
   // Execute action on hide modal
   $scope.$on('modal.hidden', function() {
@@ -128,22 +118,39 @@ angular.module('rtcommMobile.controllers', [])
     // Execute action
   });
 
-  $scope.connect = function connect(callee) {
+  vm.toggleMute= function toggleMute() {
+    // get the endpoint
+    $log.debug('toggleMute() called, looking for endpoint '+vm.myEndpointUUID);
+    var ep = rtcommService.getEndpoint(vm.myEndpointUUID);
+    if (ep.webrtc) {
+      if (ep.webrtc.isMuted() ) {
+        $log.debug('toggleMute() called: UNMUTING');
+        ep.webrtc.unmute();
+      } else {
+        $log.debug('toggleMute() called: MUTING');
+        ep.webrtc.mute();
+      }
+    }
+  };
+
+  vm.connect = function connect(callee) {
      $log.debug('Pressed connect -- got user: '+callee);
-      if (callee) {
-        $scope.myEndpointUUID = RtcommService.placeCall(callee, ['webrtc']);
+     callee = callee ? callee : vm.callee;
+      if (callee ) {
+        $log.debug('Connecting to user: '+callee);
+        vm.myEndpointUUID = rtcommService.placeCall(callee, ['webrtc']);
       } else {
         $log.error('You must enter a callee');
       }
-      $scope.closeModal();
+      vm.closeModal();
   };
 
-  $scope.sessionAction = function() {
+  vm.sessionAction = function() {
     // Issue a 'connect' or disconnect.
-    if ($scope.sessionStarted) {
-      RtcommService.endCall(RtcommService.getEndpoint(RtcommService.getActiveEndpoint()));
+    if (vm.sessionStarted) {
+      rtcommService.endCall(rtcommService.getEndpoint(rtcommService.getActiveEndpoint()));
     } else {
-     $scope.openModal();
+     vm.openModal();
      /*
      $ionicPopup.prompt({
        title: 'Call someone',
@@ -152,7 +159,7 @@ angular.module('rtcommMobile.controllers', [])
        inputPlaceholder: 'callee'
      }).then(function(callee) {
       if (callee) {
-        $scope.myEndpointUUID = RtcommService.placeCall(callee, ['webrtc']);
+        $scope.myEndpointUUID = rtcommService.placeCall(callee, ['webrtc']);
       } else {
         $log.error('You must enter a callee');
       }
@@ -160,25 +167,52 @@ angular.module('rtcommMobile.controllers', [])
     */
     }
   };
+
+  $scope.$on('webrtc:remotemuted', function(event, object) {
+    $log.debug('<----- webrtc:remotemuted ---->', object);
+    // True means they are muted...
+    if (!object.audio && !object.video) {
+      $log.debug('<----- webrtc:remotemuted ----> MUTING! ', object);
+     //Notify User remote call was muted muting
+     $ionicPopup.alert({
+       title: 'Call Muted',
+       subTitle: 'The remote user muted their call'
+     });
+    }
+  });
+
   $scope.$on('session:started', function(event, object) {
     $log.debug('VideoCtrl - session:started');
-    $scope.sessionStarted = true;
+    vm.sessionStarted = true;
   });
   $scope.$on('session:stopped', function(event, object) {
     $log.debug('VideoCtrl - session:stopped');
-    $scope.sessionStarted = false;
+    vm.sessionStarted = false;
   });
   $scope.$on('session:failed', function(event, object) {
     $log.debug('VideoCtrl - session:failed');
-    $scope.sessionStarted = false;
+    vm.sessionStarted = false;
   });
 })
-.controller('UsersCtrl', function($scope, $log, State) {
-  $scope.users = State.users;
-  $log.debug('UsersCtrl!', $scope.users);
+.controller('UsersCtrl', function($scope, $log, Global,rtcommService) {
+  $scope.users = Global.state.users;
+  $scope.myUser = Global.state.userid;
+  $log.debug('UsersCtrl!',$scope.users);
   $scope.$on('$ionicView.enter', function() {
     $log.debug('Users Enter -- loading config ', $scope.users);
+    $log.debug('Global Users Enter -- loading config ', Global.state.users);
   });
+  $scope.connect = function connect(callee) {
+     $log.debug('Pressed connect -- got user: '+callee);
+     callee = callee ? callee : vm.callee;
+      if (callee ) {
+        $log.debug('Connecting to user: '+callee);
+        rtcommService.placeCall(callee, ['webrtc']);
+      } else {
+        $log.error('You must enter a callee');
+      }
+  };
+
 })
 // Settings controller
 .controller('SettingsCtrl', function($scope, $log, Settings) {
@@ -191,9 +225,4 @@ angular.module('rtcommMobile.controllers', [])
     // Save the settings
     Settings.save();
   });
-  
-
-
-
-
 });

@@ -1,26 +1,22 @@
-angular.module('rtcommMobile.services', ['angular-rtcomm'])
-
-.factory('State', function($rootScope, $log, RtcommService, Settings) {
+angular.module('rtcommMobile.services', ['angular-rtcomm-service'])
+.factory('Global', function($rootScope, $log, rtcommService, Settings) {
+    // State object to be returned.
     var state = {
       registered :false,
       insession : false,
-      users: [],
+      users: [], 
       message : "Not registered",
       alert: '',
       userid: ''
     };
     var presenceMonitor = null;
     $rootScope.$on('rtcomm::init', function(event, registered, object ) {
-      presenceMonitor = RtcommService.getPresenceMonitor(Settings.load().presenceTopic);
-      $log.debug('Presence Data? : ', presenceMonitor.getPresenceData()[0].flatten());
-      state.users = presenceMonitor.getPresenceData()[0].flatten();
-      $log.debug(' Users are: ', state.users);
+      presenceMonitor = rtcommService.getPresenceMonitor(Settings.load().presenceTopic);
+      angular.copy(presenceMonitor.getPresenceData()[0].flatten(), state.users);
       presenceMonitor.on('updated', function(presenceData) {
         $rootScope.$evalAsync(function() {
-          $log.debug('--------- Presence was updated ------------', presenceData);
-          $log.debug('--------- Presence Data? : ', presenceMonitor.getPresenceData()[0].flatten());
-          state.users= presenceMonitor.getPresenceData()[0].flatten();
-          $log.debug('--------- users: ? : ', state.users);
+          angular.copy(presenceMonitor.getPresenceData()[0].flatten(), state.users);
+          $log.debug('--------- Presence Updated ---------- users:', state.users);
         });
       });
       $rootScope.$evalAsync(function(){
@@ -58,9 +54,9 @@ angular.module('rtcommMobile.services', ['angular-rtcomm'])
       state.message = 'Session Start failed';
       state.insession = false;
     });
-   return state;
+   return { state: state} ;
 })
-.factory('Settings', function($rootScope, $http, $log, RtcommService){
+.factory('Settings', function($rootScope, $http, $log, rtcommService){
 
   var configURL = "/rtcommConfig.json";
   var defaultConfig = { 
