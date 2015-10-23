@@ -67,7 +67,7 @@ angular.module('rtcommMobile.services', ['angular-rtcomm-service'])
     presenceTopic: 'mobileClients',
     rtcommDebug: 'DEBUG',
     userid : '',
-	  rtcommTopicPath : "/rtcomm-scottgraham/"
+	  rtcommTopicPath : "/rtcommMobile-1234/"
   };
   var localConfig = localStorage['rtcommConfig'] ? 
                     JSON.parse(localStorage['rtcommConfig']) :  

@@ -1,6 +1,6 @@
 #Overview
 
-This mobile sample application uses the http://github.com/WASdev/lib.rtcomm.clientjs and http://github.com/WASdev/lib.angular-rtcomm to make WebRTC Audio/Video calls on a mobile device.  It is heavily reliant on the http://phonertc.io project.
+This mobile sample application uses the http://github.com/WASdev/lib.rtcomm.clientjs and http://github.com/WASdev/lib.angular-rtcomm to make WebRTC Audio/Video calls on a mobile device.  It is heavily reliant on the iosrtc plugin: https://github.com/eface2face/cordova-plugin-iosrtc
 
 #Getting Started
 To use this sample application, you need to do the following steps:
