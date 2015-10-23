@@ -34,22 +34,31 @@ NOTE: use `$ sudo npm install -g cordova ionic bower` if you are running on a Ma
   4) Add platforms iOS / android / browser
   ```
   $  ionic platform add ios browser android
-  ```
-  5) Run as usual:
+  ``` 
+
+  5) Install the app to your device:
+
   ```
   $ ionic run android --device
   $ ionic run ios --device
   ```
+  If the above doesn't work you can also use the native SDKs for iOS & Android:
 
+  *iOS*
+    1. Open the file: 'sample.rtcomm.mobile/platforms/ios/sample.rtcomm.mobile.xcodeproj' in XCode.
+       < You may get prompted to convert the code, go ahead, it shouldn't make any changes>
+    2. Go to 'Build Settings', Search for 'Enable Bitcode' and change it to 'No' 
+    3. Now you can build & Deploy to your device in the normal fashion (select your device and run the app on it)
 
+    *Note:  The simulators do not seem to work.*
 
-   6) Configure and run the sample application:
-      1. Go to Settings tab and fill there "MQTT server" host and "MQTT server" port (ensure that server is up and running).
-      2. Topic should be the same for all users who wants to share AV.
-      3. In "My UserID" put the user name you want to register with.
-      4. Go to the Video tab and press "Please Register" button.
-      5. When you want to make a call, hit the "Make a Call" button and fill the peer user name.
-      
+  6) Configure and run the sample application:
+    1. Go to Settings tab and make sure "MQTT server" host and "MQTT server" port match the MQTT server your Liberty Server is using. 
+    2. Topic should be the same for all users who wants to share AV and match your Liberty Server.
+    3. In "My UserID" put the user name you want to register with.
+    4. Go to the Status tab and press "Register" button.
+    5. When you want to make a call, go to the "Video" Tab and press the Call button.  A list of other users on the system should be displayed.  Select one and a call should start.
+
 
 #References
 **IONIC**
