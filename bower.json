@@ -5,7 +5,7 @@
     "ionic": "driftyco/ionic-bower#1.1.0"
   },
   "dependencies": {
-    "angular-rtcomm": "~1.0.0"
+    "angular-rtcomm": "~1.0.2"
   },
   "resolutions": {
     "angular": ">=1.3.0"

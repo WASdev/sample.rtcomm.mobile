@@ -12,7 +12,7 @@ angular.module('rtcommMobile', [
   'angular-rtcomm-ui',
   'rtcommMobile.controllers', 
   'rtcommMobile.services'])
-  .run(function($ionicPlatform, Settings, rtcommService) {
+  .run(function($ionicPlatform, Settings, RtcommService) {
     $ionicPlatform.ready(function() {
       // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
       // for form inputs)
@@ -34,7 +34,7 @@ angular.module('rtcommMobile', [
       var settings = Settings.load();
       if (settings.register && settings.userid !== '') {
       // If we are registered, go ahead and apply the config (and register basically) here.
-         rtcommService.setConfig(settings);
+         RtcommService.setConfig(settings);
       }
     });
   })

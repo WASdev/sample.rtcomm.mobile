@@ -1,5 +1,5 @@
 angular.module('rtcommMobile.services', ['angular-rtcomm-service'])
-.factory('Global', function($rootScope, $log, rtcommService, Settings) {
+.factory('Global', function($rootScope, $log, RtcommService, Settings) {
     // State object to be returned.
     var state = {
       registered :false,
@@ -11,7 +11,7 @@ angular.module('rtcommMobile.services', ['angular-rtcomm-service'])
     };
     var presenceMonitor = null;
     $rootScope.$on('rtcomm::init', function(event, registered, object ) {
-      presenceMonitor = rtcommService.getPresenceMonitor(Settings.load().presenceTopic);
+      presenceMonitor = RtcommService.getPresenceMonitor(Settings.load().presenceTopic);
       angular.copy(presenceMonitor.getPresenceData()[0].flatten(), state.users);
       presenceMonitor.on('updated', function(presenceData) {
         $rootScope.$evalAsync(function() {
@@ -56,7 +56,7 @@ angular.module('rtcommMobile.services', ['angular-rtcomm-service'])
     });
    return { state: state} ;
 })
-.factory('Settings', function($rootScope, $http, $log, rtcommService){
+.factory('Settings', function($rootScope, $http, $log, RtcommService){
 
   var configURL = "/rtcommConfig.json";
   var defaultConfig = { 
