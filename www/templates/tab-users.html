@@ -1,0 +1,12 @@
+<ion-view view-title="Active Users">
+  <ion-content>
+    <ion-list>
+      <ion-item class="item-button-right" ng-repeat="user in users" ng-if="user.name!=myUser">
+        {{user.name}}
+        <button class="button button-positive" ng-click="connect(user.name)"> 
+          <i class="icon ion-ios-telephone"></i>
+        </button>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-view>

@@ -1,24 +1,20 @@
-<ion-view view-title="Camera Report">
-  <ion-content on-scroll="updatePosition()" on-scroll-complete="updatePosition()" >
-    
-    <div class="row">
-    <div class="col">
-      <div id="videoContainer" class="video-container"></div>
-    </div>
-  </div>
-  
-  <div class="row">
-    <div class="col" style="z-index:9999">
-	   <label class="item item-input item-stacked-label">
-          <input type="text" ng-model="messageFromCamera" placeholder="{{messageFromCamera}}" >
-      </label>
-      <button class="button button-block {{sessionStarted?'button-assertive':'button-balanced'}}" ng-click="sessionAction()">
-          {{sessionStarted?'Hang Up':'Make a Call'}}
-      </button>
-      <button class="button button-block {{connected?'button-assertive':'button-balanced'}}" ng-click="connect()">
-          {{connected?'Registered':'Please Register'}}
-      </button>
-    </div>
+<ion-view view-title="Video Window">
+  <ion-content scroll="false" >
+    <div id='videos'>
+      <video id="local-video" class='localVideo' autoplay mute></video>
+      <div id='status-message'>
+        <rtcomm-endpoint-status></rtcomm-endpoint-status>
+      </div>
+      <video id="remote-video" class='remoteVideo' autoplay></video>
+      <div id="control-buttons" class="row">
+        <div class="col" style="text-align:center">
+         <button class="button icon round-button ion-ios-telephone {{video.sessionStarted?'button-assertive':'button-balanced'}}" ng-click="video.sessionAction()"></button>
+        </div>
+        <div class="col" style="text-align:center">
+         <button class="button icon round-button ion-ios-mic-off" ng-click="video.toggleMute()"></button>
+        </div>
+      <div> 
   </div>
   </ion-content>
+ <!-- align to the bottom of the page -->
 </ion-view>

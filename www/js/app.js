@@ -5,21 +5,39 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('rtcommMobile', ['ionic', 'rtcommMobile.controllers', 'rtcommMobile.services', 'angular-rtcomm'])
-
-.run(function($ionicPlatform) {
-  $ionicPlatform.ready(function() {
-    // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
-    // for form inputs)
-    if (window.cordova && window.cordova.plugins.Keyboard) {
-      cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
-    }
-    if (window.StatusBar) {
-      // org.apache.cordova.statusbar required
-      StatusBar.styleDefault();
-    }
-  });
-})
+angular.module('rtcommMobile', [
+  'ionic',
+  'ngIOS9UIWebViewPatch', 
+  'angular-rtcomm-service',
+  'angular-rtcomm-ui',
+  'rtcommMobile.controllers', 
+  'rtcommMobile.services'])
+  .run(function($ionicPlatform, Settings, RtcommService) {
+    $ionicPlatform.ready(function() {
+      // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
+      // for form inputs)
+       // Just for iOS devices.
+      if (window && window.device && window.device.platform === 'iOS') {
+         cordova.plugins.iosrtc.registerGlobals();
+      }
+      if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
+        cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
+        cordova.plugins.Keyboard.disableScroll(true);
+      }
+      if (window.StatusBar) {
+        // org.apache.cordova.statusbar required
+        StatusBar.styleLightContent();
+      }
+      /*
+       * Load the Settings and check if we should automatically register.
+       */
+      var settings = Settings.load();
+      if (settings.register && settings.userid !== '') {
+      // If we are registered, go ahead and apply the config (and register basically) here.
+         RtcommService.setConfig(settings);
+      }
+    });
+  })
 
 .config(function($stateProvider, $urlRouterProvider) {
 
@@ -30,12 +48,11 @@ angular.module('rtcommMobile', ['ionic', 'rtcommMobile.controllers', 'rtcommMobi
   $stateProvider
 
   // setup an abstract state for the tabs directive
-    .state('tab', {
+  .state('tab', {
     url: "/tab",
     abstract: true,
     templateUrl: "templates/tabs.html"
   })
-
   // Each tab has its own nav history stack:
   .state('tab.dash', {
     url: '/dash',
@@ -51,7 +68,7 @@ angular.module('rtcommMobile', ['ionic', 'rtcommMobile.controllers', 'rtcommMobi
       views: {
         'tab-video': {
           templateUrl: 'templates/tab-video.html',
-          controller: 'VideoCtrl'
+          controller: 'VideoCtrl as video'
         }
       }
     })
@@ -63,8 +80,16 @@ angular.module('rtcommMobile', ['ionic', 'rtcommMobile.controllers', 'rtcommMobi
         controller: 'SettingsCtrl'
       }
     }
+  })
+  .state('tab.users', {
+    url: '/users',
+    views: {
+      'tab-users': {
+        templateUrl: 'templates/tab-users.html',
+        controller: 'UsersCtrl'
+      }
+    }
   });
-
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/tab/dash');
 

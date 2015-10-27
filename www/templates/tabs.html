@@ -5,18 +5,19 @@ navigation history that also transitions its views in and out.
 -->
 <ion-tabs class="tabs-icon-top tabs-color-active-positive">
   <!-- Dashboard Tab -->
-  <ion-tab title="Status" icon-off="ion-ios7-pulse" icon-on="ion-ios7-pulse-strong" href="#/tab/dash">
+  <ion-tab title="Status" icon-off="ion-ios-pulse" icon-on="ion-ios-pulse-strong" href="#/tab/dash">
     <ion-nav-view name="tab-dash"></ion-nav-view>
   </ion-tab>
-
   <!-- Video Tab -->
-  <ion-tab title="Video" icon-off="ion-ios-videocam-outline" icon-on="ion-ios-videocam" href="#/tab/video">
+  <ion-tab title="Video" icon-off="ion-ios-videocam-outline" icon-on="ion-ios-videocam" disabled="!state.registered" href="#/tab/video">
     <ion-nav-view name="tab-video"></ion-nav-view>
   </ion-tab>
-
+  <!-- Users Tab  -->
+  <ion-tab title="Users" icon-off="ion-ios-people-outline" icon-on="ion-ios-people" href="#/tab/users">
+    <ion-nav-view name="tab-users"></ion-nav-view>
+  </ion-tab> 
   <!-- Settings Tab -->
-  <ion-tab title="Settings" icon-off="ion-ios7-gear-outline" icon-on="ion-ios7-gear" href="#/tab/settings">
+  <ion-tab title="Settings" icon-off="ion-ios-gear-outline" icon-on="ion-ios-gear" href="#/tab/settings" disabled="state.insession">
     <ion-nav-view name="tab-settings"></ion-nav-view>
   </ion-tab>
-
 </ion-tabs>

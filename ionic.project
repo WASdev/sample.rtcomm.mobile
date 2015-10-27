@@ -1,12 +1,4 @@
 {
-  "name": "rtcommmobile",
-  "app_id": "",
-  "gulpStartupTasks": [
-    "sass",
-    "watch"
-  ],
-  "watchPatterns": [
-    "www/**/*",
-    "!www/lib/**/*"
-  ]
+  "name": "sample.rtcomm.mobile",
+  "app_id": ""
 }

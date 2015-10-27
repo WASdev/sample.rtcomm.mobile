@@ -1,14 +1,89 @@
 /* Empty. Add your own CSS if you like */
-.video-container {
-  /* The following 3 create a full width 'square' div */
-  width: 100%;
-  height: 0;
-  padding-bottom:100%;
-  background-image: url(../img/video_camera_big.png);
-  background-repeat: no-repeat;
-  background-position: center;
-  margin-bottom: 20px;
-  margin-right: auto;
-  margin-left: auto;
-  margin-top: 20px;
+
+
+
+#local-video {
+  border: 1px solid gray;
+  top: 20px;
+  left: 20px;
+  /* video div is flipped horizontally when active*/
+  max-height: 17%;
+  max-width: 17%;
+  opacity: 1;
+  z-index: 100;
+  position: absolute;
+  transition: opacity 1s;
 }
+#remote-video {
+  display: block;
+  height: 100%;
+  max-height: 100%;
+  max-width: 100%;
+  object-fit: cover;  /* no letterboxing */
+  background: black;
+  opacity: 0.85;
+  position: absolute;
+  -moz-transform: rotateY(180deg);
+  -ms-transform: rotateY(180deg);
+  -o-transform: rotateY(180deg);
+  -webkit-transform: rotateY(180deg);
+  transform: rotateY(180deg);
+  transition: opacity 1s;
+  width: 100%;
+}
+
+#videos {
+  font-size: 0; /* to fix whitespace/scrollbars problem */
+  height: 100%;
+  pointer-events: none;
+  position: absolute;
+  transition: all 1s;
+  width: 100%;
+}
+
+#status-message {
+  position: absolute;
+  top: 20px;
+  left: 24%;
+  z-index: 999;
+  font-size: 18px;
+  color:white;
+  text-align: center;
+  opacity: 0.85;
+}
+
+#videos.active {
+  -moz-transform: rotateY(180deg);
+  -ms-transform: rotateY(180deg);
+  -o-transform: rotateY(180deg);
+  -webkit-transform: rotateY(180deg);
+  transform: rotateY(180deg);
+}
+
+#control-buttons {
+  bottom: 30px;
+  position: absolute;
+  pointer-events: auto;
+  z-index: 999;
+}
+
+.round-button {
+    width: 10%;
+    height: 0;
+    padding-bottom: 10%;
+    border-radius: 50%;
+    border: 2px solid #f5f5f5;
+    overflow: hidden;
+    box-shadow: 0 0 3px gray;
+}
+.round-button:hover {
+    background: #262626;
+}
+.round-button img {
+    display: block;
+    width: 76%;
+    padding: 12%;
+    height: auto;
+}
+
+

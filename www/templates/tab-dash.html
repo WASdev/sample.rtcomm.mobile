@@ -1,12 +1,20 @@
 <ion-view view-title="Dashboard">
   <ion-content class="padding">
     <div class="list card">
-      <div class="item item-divider">Welcom</div>
+      <div class="item item-divider">Welcome</div>
       <div class="item item-body">
-        <div>
-          This is the First Responder IBM Application.  Go to 'Settings' and ensure everything is configured correctly.  Then go to the Video tab and 'Register!'
-        </div>
+          This is the IBM Mobile Sample Application.  Go to 'Settings' and ensure everything is configured correctly and enter a userid.  
+          Then 'Register!'
+      </div>
+      <div class="item item-body">
+        {{state.message}}
+      </div>
+      <div class="item item-body">
+        {{state.alert}}
       </div>
     </div>
+    <button ng-model='state' class="button button-full button-positive" ng-click="register()">  
+      {{state.registered ? "Unregister" : "Register"}}
+    </button>
   </ion-content>
 </ion-view>
