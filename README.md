@@ -29,14 +29,19 @@ NOTE: use `$ sudo npm install -g cordova ionic bower` if you are running on a Ma
   3) Install Dependencies
   ```
   npm install
-  grunt install
+  gulp install
   ```
-  4) Add platforms iOS / android / browser
+  4) Add platforms iOS / android
   ```
-  $  ionic platform add ios browser android
+  $  ionic platform add ios android
   ``` 
 
-  5) Install the app to your device:
+  5)  Test the app locally
+  ```
+  $ ionic server
+  ```
+
+  6) Install the app to your device:
 
   ```
   $ ionic run android --device
@@ -44,15 +49,15 @@ NOTE: use `$ sudo npm install -g cordova ionic bower` if you are running on a Ma
   ```
   If the above doesn't work you can also use the native SDKs for iOS & Android:
 
-  *iOS*
+  **iOS**
     1. Open the file: 'sample.rtcomm.mobile/platforms/ios/sample.rtcomm.mobile.xcodeproj' in XCode.
        < You may get prompted to convert the code, go ahead, it shouldn't make any changes>
     2. Go to 'Build Settings', Search for 'Enable Bitcode' and change it to 'No' 
     3. Now you can build & Deploy to your device in the normal fashion (select your device and run the app on it)
 
-    *Note:  The simulators do not seem to work.*
+    **Note:  The simulators do not seem to work.**
 
-  6) Configure and run the sample application:
+  7) Configure and run the sample application:
     1. Go to Settings tab and make sure "MQTT server" host and "MQTT server" port match the MQTT server your Liberty Server is using. 
     2. Topic should be the same for all users who wants to share AV and match your Liberty Server.
     3. In "My UserID" put the user name you want to register with.
