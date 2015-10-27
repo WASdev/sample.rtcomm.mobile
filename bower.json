@@ -1,5 +1,11 @@
 {
   "name": "sample.rtcomm.mobile",
+  "homepage": "https://github.com/WASdev/sample.rtcomm.mobile",
+  "version": "0.0.2",
+  "authors": [
+    "Scott W Graham <swgraham@us.ibm.com>"
+  ],
+  "description": "Mobile Sample using Rtcomm Communications library ",
   "private": "true",
   "devDependencies": {
     "ionic": "driftyco/ionic-bower#1.1.0"
