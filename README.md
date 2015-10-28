@@ -2,6 +2,20 @@
 
 This mobile sample application uses the http://github.com/WASdev/lib.rtcomm.clientjs and http://github.com/WASdev/lib.angular-rtcomm to make WebRTC Audio/Video calls on a mobile device.  It is heavily reliant on the iosrtc plugin: https://github.com/eface2face/cordova-plugin-iosrtc
 
+This sample is configured to use a PUBLIC MQTT Server (messagesight.demos.ibm.com). 
+
+#Requirements
+
+1.  A Liberty Profile server that runs with the rtcomm-1.0 feature enabled.
+  1. Grab Liberty https://developer.ibm.com/wasdev/downloads/liberty-profile-using-non-eclipse-environments/
+  2. And make sure you install rtcomm-1.0:
+  ```
+  bin/installUtility install rtcomm-1.0
+  ```
+2.  An MQTT Server such as IBM MessageSite. For prototyping and development, it is possible to use `messagesight.demos.ibm.com`. 
+
+**Note:  For more information on setting up Liberty visit http://angular-rtcomm.wasdev.developer.ibm.com **
+
 #Getting Started
 To use this sample application, you need to do the following steps:
 
