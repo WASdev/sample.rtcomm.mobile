@@ -87,7 +87,7 @@ NOTE: use `$ sudo npm install -g cordova ionic bower` if you are running on a Ma
 
   5)  Test the app locally
   ```
-  $ ionic server
+  $ ionic serve
   ```
   6) Install the app to your device:
 
