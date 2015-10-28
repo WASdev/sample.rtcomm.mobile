@@ -23,14 +23,49 @@ To use this sample application, you need to do the following steps:
 
 2. Know your MQTT server address host:port (used in step 7.1) - you will need this server to communicate between users. 
 
-3. Install ionic & cordova & bower:
+3.  Configure and start Liberty:
+  1.  Create your rtcomm Server:
+    ```
+    $WLP/bin/server create rtcomm
+    ```
+  2.  Edit $WLP/usr/servers/rtcomm/server.xml to look like the following server.xml **Change *<SOMEUNIQUESTRING>* to something unique **
+    ```xml
+    <?xml version="1.0" encoding="UTF-8"?>
+<server description="rtcomm developer sandbox liberty profile">
+
+    <!-- Enable features -->
+    <featureManager>
+        <feature>rtcomm-1.0</feature>
+        <feature>servlet-3.1</feature>
+    </featureManager>
+
+    <httpEndpoint id="defaultHttpEndpoint"
+                  httpPort="9080"
+                  httpsPort="9443" />
+
+     <!-- Setup the rtcomm options with a unique topic path for the Liberty Server profile -->
+	<rtcomm messageServerHost="messagesight.demos.ibm.com" messageServerPort="1883" rtcommTopicPath="/<SOMEUNIQUESTRING>/">
+		
+		<iceServerURL>stun:stun.l.google.com:19302</iceServerURL>
+		<iceServerURL>stun:stun1.l.google.com:19302</iceServerURL>
+		<iceServerURL>stun:stun2.l.google.com:19302</iceServerURL>
+					
+	</rtcomm>
+	
+</server>
+```
+   3.  Start the rtcomm server:
+      ```
+      $WLP/bin/server start rtcomm
+   ```
+4. Install ionic & cordova & bower:
 
 ```
 $  npm install -g cordova ionic bower
 ```
 NOTE: use `$ sudo npm install -g cordova ionic bower` if you are running on a Mac.
 
-4. Clone and configure the sample application code:
+5. Clone and configure the sample application code:
  
   1)  Clone the Project (sample.rtcomm.mobile)
   ```
@@ -54,7 +89,6 @@ NOTE: use `$ sudo npm install -g cordova ionic bower` if you are running on a Ma
   ```
   $ ionic server
   ```
-
   6) Install the app to your device:
 
   ```
@@ -72,12 +106,12 @@ NOTE: use `$ sudo npm install -g cordova ionic bower` if you are running on a Ma
     **Note:  The simulators do not seem to work.**
 
   7) Configure and run the sample application:
-    1. Go to Settings tab and make sure "MQTT server" host and "MQTT server" port match the MQTT server your Liberty Server is using. 
-    2. Topic should be the same for all users who wants to share AV and match your Liberty Server.
-    3. In "My UserID" put the user name you want to register with.
-    4. Go to the Status tab and press "Register" button.
-    5. When you want to make a call, go to the "Video" Tab and press the Call button.  A list of other users on the system should be displayed.  Select one and a call should start.
 
+   1. Go to Settings tab and make sure "MQTT server" host and "MQTT server" port match the MQTT server your Liberty Server is using. 
+    2. Topic should be the same for all users who wants to share AV and match your Liberty Server.(What you replaced in <SOMEUNIQUESTRING> above.
+    3. In "My UserID" put the user name you want to register with.
+   4. Go to the Status tab and press "Register" button.
+  5. When you want to make a call, go to the "Video" Tab and press the Call button.  A list of other users on the system should be displayed.  Select one and a call should start.
 
 #References
 **IONIC**
