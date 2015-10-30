@@ -21,7 +21,7 @@ To use this sample application, you need to do the following steps:
 
 1. Install NodeJS from here https://nodejs.org/. Please verify the installation path is added to Path environment variable
 
-2. Know your MQTT server address host:port (used in step 7.1) - you will need this server to communicate between users. 
+2. Know your MQTT server address host:port (used in step 5: 7.1) - you will need this server to communicate between users. 
 
 3.  Configure and start Liberty:
   1.  Create your rtcomm Server:
@@ -58,13 +58,12 @@ To use this sample application, you need to do the following steps:
       ```
       $WLP/bin/server start rtcomm
    ```
+   
 4. Install ionic & cordova & bower:
-
-```
-$  npm install -g cordova ionic bower
-```
-NOTE: use `$ sudo npm install -g cordova ionic bower` if you are running on a Mac.
-
+	```
+	$  npm install -g cordova ionic bower
+	```
+	NOTE: use `$ sudo npm install -g cordova ionic bower` if you are running on a Mac.
 5. Clone and configure the sample application code:
  
   1)  Clone the Project (sample.rtcomm.mobile)
