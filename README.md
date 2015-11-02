@@ -61,7 +61,7 @@ To use this sample application, you need to do the following steps:
    
 4. Install ionic & cordova & bower:
 	```
-	$  npm install -g cordova ionic bower
+	$  npm install -g cordova ionic bower gulp
 	```
 	NOTE: use `$ sudo npm install -g cordova ionic bower` if you are running on a Mac.
 5. Clone and configure the sample application code:
